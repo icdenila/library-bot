@@ -67,7 +67,7 @@ app.post('/chat', async (req, res) => {
       `${b.title} by ${b.author} (${b.status})`
     ).join(", ");
 
-   // Call Gemini AI using the stable v1 API
+    // THIS IS THE UPDATED URL SECTION
     const response = await axios.post(
       `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_KEY}`,
       {
@@ -84,6 +84,7 @@ app.post('/chat', async (req, res) => {
 
     res.json({ reply: botReply });
   } catch (err) {
+    // This logs the specific reason (AI vs Database) in your Render console
     console.error("Error details:", err.response ? err.response.data : err.message);
     res.status(500).json({ reply: "Database/API Error. Check Render Logs." });
   }
