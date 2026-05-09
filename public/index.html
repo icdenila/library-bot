@@ -31,11 +31,12 @@
             box.innerHTML += `<div class="user">${text}</div>`;
             input.value = '';
 
-            const res = await fetch('/chat', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ message: text })
-            });
+// To this:
+const res = await fetch('/chat', { 
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: text })
+});
             const data = await res.json();
             box.innerHTML += `<div class="bot">${data.reply}</div>`;
             box.scrollTop = box.scrollHeight;
