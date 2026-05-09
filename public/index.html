@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>School Library Bot</title>
+    <style>
+        body { font-family: sans-serif; background: #121212; color: white; display: flex; justify-content: center; padding: 20px; }
+        #chat { width: 400px; height: 500px; border: 1px solid #333; display: flex; flex-direction: column; background: #1e1e1e; border-radius: 10px; }
+        #msgs { flex: 1; overflow-y: auto; padding: 10px; }
+        .bot { color: #00ffcc; margin-bottom: 10px; }
+        .user { color: #fff; text-align: right; margin-bottom: 10px; }
+        #input-area { display: flex; border-top: 1px solid #333; }
+        input { flex: 1; padding: 10px; background: none; border: none; color: white; outline: none; }
+        button { padding: 10px; background: #00ffcc; border: none; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div id="chat">
+        <div id="msgs"><div>Bot: Welcome to the Library!</div></div>
+        <div id="input-area">
+            <input type="text" id="msg" placeholder="Ask about a book...">
+            <button onclick="send()">Send</button>
+        </div>
+    </div>
+    <script>
+        async function send() {
+            const input = document.getElementById('msg');
+            const box = document.getElementById('msgs');
+            const text = input.value;
+            if(!text) return;
+
+            box.innerHTML += `<div class="user">${text}</div>`;
+            input.value = '';
+
+            const res = await fetch('/chat', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ message: text })
+            });
+            const data = await res.json();
+            box.innerHTML += `<div class="bot">${data.reply}</div>`;
+            box.scrollTop = box.scrollHeight;
+        }
+    </script>
+</body>
+</html>
